@@ -1,0 +1,6 @@
+Django==2.2.16
+<<<<<<< HEAD
+django-widget-tweaks==1.4.8
+=======
+django-widget-tweaks==1.4.8
+>>>>>>> 035b5c779aa8b49b81e3dac0c4d30af4db3d0d96
