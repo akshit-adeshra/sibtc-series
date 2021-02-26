@@ -1,31 +1,70 @@
 {% extends 'base.html' %}
+{% load custom_tags %}
+{% load humanize %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item active">Boards</li>
+<li class="breadcrumb-item active">Boards</li>
 {% endblock %}
 
 {% block content %}
-  <table class="table">
+
+{% if user.is_authenticated %}
+<!-- Here we have used built-in template tags named "url" and assigned a var to the whole url path , and then used the
+var while calling the url -->
+{% url 'accounts:logout' as logout%}
+<a href="{{ logout }}" role="button">Log out</a>
+<br>
+{% endif %}
+It is {% now "jS F Y H:i:s" %} <br>
+
+{% with board='Board' topic='Topic' post='Post'%}
+There are {% total_count board %} Boards in your model ,
+There are {% total_count topic %} Topics in your model ,
+There are {% total_count post %} Posts in your model
+{% endwith %}
+
+<table class="table">
     <thead class="thead-inverse">
-      <tr>
+    <tr>
         <th>Board</th>
         <th>Posts</th>
         <th>Topics</th>
         <th>Last Post</th>
-      </tr>
+    </tr>
     </thead>
     <tbody>
-      {% for board in boards %}
-        <tr>
-          <td>
+    {% for board in boards %}
+    <tr>
+        <td>
             <a href="{% url 'boards:board_topics' board.pk %}">{{ board.name }}</a>
+            <!--            <a href="{% url 'boards:board_topics' board.pk %}">{{ board.name|join:" // "|length|add:"100"|ordinal }}</a>-->
+            <!--            <small class="text-muted d-block">{{ board.id|add:"1000000"|intword }}</small>-->
             <small class="text-muted d-block">{{ board.description }}</small>
-          </td>
-          <td class="align-middle">0</td>
-          <td class="align-middle">0</td>
-          <td></td>
-        </tr>
-      {% endfor %}
+            <!--            <small class="text-muted d-block">{{ board.description|add:"2"|linenumbers }}</small>-->
+            <!--            <small class="text-muted d-block">{{ board.description|slugify }}</small>-->
+            <!--            <small class="text-muted d-block">{{ board.description|ljust:"10"|make_list|slice:"10:5:-1" }}</small>-->
+            <!--            <small class="text-muted d-block">{{ 10|pluralize:"y,ies" }}</small>-->
+        </td>
+        <td class="align-middle">{{ board.get_posts_count }}</td>
+        <td class="align-middle">{{ board.topics.count }}</td>
+        <!-- ex of reverse relationship; 'topics' is the related_name attribute defined in the model -->
+        <td class="align-middle">
+            {% with post=board.get_last_post %}
+            {% if post %}
+            <small>
+                <a href="{% url 'boards:topic_posts' board.pk post.topic.pk %}">
+                    By <strong>{{ post.created_by.first_name }}</strong>, at {{ post.created_at }}
+                </a>
+            </small>
+            {% else %}
+            <small class="text-muted">
+                <em>No posts yet.</em>
+            </small>
+            {% endif %}
+            {% endwith %}
+        </td>
+    </tr>
+    {% endfor %}
     </tbody>
-  </table>
+</table>
 {% endblock %}

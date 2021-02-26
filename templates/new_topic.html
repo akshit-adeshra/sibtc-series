@@ -1,17 +1,25 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Start a New Topic{% endblock %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item"><a href="{% url 'boards:home' %}">Boards</a></li>
-  <li class="breadcrumb-item"><a href="{% url 'boards:board_topics' board.pk %}">{{ board.name }}</a></li>
-  <li class="breadcrumb-item active">New topic</li>
+<li class="breadcrumb-item"><a href="{% url 'boards:home' %}">Boards</a></li>
+<li class="breadcrumb-item"><a href="{% url 'boards:board_topics' board.pk %}">{{ board.name }}</a></li>
+<li class="breadcrumb-item active">New topic</li>
 {% endblock %}
 
 {% block content %}
-  <form method="post" novalidate>
+<div id="topic-success-msg" class="alert alert-danger" style="display: none;"></div>
+
+<form id="new-topic-form" method="post" novalidate>
     {% csrf_token %}
     {% include 'includes/form.html' %}
     <button type="submit" class="btn btn-success">Post</button>
-  </form>
+</form>
+{% endblock %}
+
+{% block javascript %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static '/js/char_count.js' %}"></script>
 {% endblock %}
