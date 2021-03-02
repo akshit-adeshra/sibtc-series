@@ -129,3 +129,6 @@ AUTH_USER_MODEL = 'accounts.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_URL = 'accounts:login'
+
+# the age of session cookies (in sec), i.e. it'll log out the user after this time period
+SESSION_COOKIE_AGE = 43200

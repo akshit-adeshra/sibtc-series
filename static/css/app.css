@@ -1,3 +1,8 @@
 .navbar-brand {
   font-family: 'Peralta', cursive;
 }
+
+.thead-inverse {
+  color: white;
+  background-color: #212529;
+}

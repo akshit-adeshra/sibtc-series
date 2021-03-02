@@ -94,7 +94,7 @@ class TopicPosts(ListView):
         self.topic = get_object_or_404(Topic, board__pk=self.kwargs.get('pk'), pk=self.kwargs.get('topic_pk'))  
         # args in .get(' ') are fetched from url's kwargs and passed as arg in the model to fetch the obj
         
-        queryset = self.topic.posts.order_by('updated_at')
+        queryset = self.topic.posts.order_by('-created_at')
         return queryset
 
 
@@ -143,8 +143,8 @@ class ReplyTopic(CreateView):
 @method_decorator(login_required, name='dispatch')
 class EditPost(UpdateView):
     model = Post
-    fields = (
-        'message',)  # fields is the alternative of 'form_class'; it'll also generate the form on-the-fly. We've used it here coz we only need 'message' field
+    fields = ('message',)  
+    # fields is the alternative of 'form_class'; it'll also generate the form on-the-fly. We've used it here coz we only need 'message' field
     template_name = 'edit_post.html'
     pk_url_kwarg = 'post_pk'
     context_object_name = 'post'

@@ -1,0 +1,8 @@
+extras.txt
+db.sqlite3
+git_info.txt
+.idea/
+boards/__pycache__/
+accounts/__pycache__/
+*.pyc
+old_boards_views.py
